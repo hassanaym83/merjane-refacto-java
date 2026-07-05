@@ -68,7 +68,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void handleExpirableProduct(Product product) {
+        if (product.getAvailable() > 0 && product.getExpiryDate().isAfter(LocalDate.now())) {
+            product.setAvailable(product.getAvailable() - 1);
+            productRepository.save(product);
+            return;
+        }
 
+        product.setAvailable(0);
+        notificationService.sendExpirationNotification(product.getName(), product.getExpiryDate());
+        productRepository.save(product);
     }
 
     public void handleExpiredProduct(Product p) {
