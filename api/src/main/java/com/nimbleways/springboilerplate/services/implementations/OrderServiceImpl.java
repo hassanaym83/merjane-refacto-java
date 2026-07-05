@@ -7,6 +7,7 @@ import com.nimbleways.springboilerplate.services.api.OrderService;
 import com.nimbleways.springboilerplate.services.api.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +23,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public ProcessOrderResponse processOrder(Long orderId) {
         Order order = findById(orderId);
 
