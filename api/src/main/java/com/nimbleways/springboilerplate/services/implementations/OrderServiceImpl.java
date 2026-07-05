@@ -2,6 +2,8 @@ package com.nimbleways.springboilerplate.services.implementations;
 
 import com.nimbleways.springboilerplate.dto.product.ProcessOrderResponse;
 import com.nimbleways.springboilerplate.entities.Order;
+import com.nimbleways.springboilerplate.exceptions.ResourceNotFoundException;
+import com.nimbleways.springboilerplate.exceptions.UnknownProductTypeException;
 import com.nimbleways.springboilerplate.repositories.OrderRepository;
 import com.nimbleways.springboilerplate.services.api.OrderService;
 import com.nimbleways.springboilerplate.services.api.ProductService;
@@ -18,7 +20,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order findById(Long orderId) {
         return orderRepository.findById(orderId).orElseThrow(
-                () -> new RuntimeException("Order not found")
+                () -> new ResourceNotFoundException("Order")
         );
     }
 
@@ -39,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
                     productService.handleExpirableProduct(product);
                     break;
                 default:
-                    throw new RuntimeException("Unknown product type");
+                    throw new UnknownProductTypeException();
             }
         });
         return new ProcessOrderResponse(orderId);
