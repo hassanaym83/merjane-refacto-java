@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    ErrorResponseDto handleEntityNotFoundException(ResourceNotFoundException e) {
+    ErrorResponseDto handleResourceNotFoundException(ResourceNotFoundException e) {
         return new ErrorResponseDto(
                 HttpStatus.NOT_FOUND.value(),
                 e.getMessage(),
@@ -28,9 +28,9 @@ public class GlobalExceptionHandler {
         );
     }
 
-    @ExceptionHandler(IllegalArgumentException .class)
+    @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    ErrorResponseDto handleIllegalArgumentException (IllegalArgumentException e) {
+    ErrorResponseDto handleIllegalArgumentException(IllegalArgumentException e) {
         return new ErrorResponseDto(
                 HttpStatus.UNPROCESSABLE_ENTITY.value(),
                 e.getMessage(),
