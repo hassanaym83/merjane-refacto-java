@@ -16,11 +16,30 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order findById(Long orderId) {
-        return null;
+        return orderRepository.findById(orderId).orElseThrow(
+                () -> new RuntimeException("Order not found")
+        );
     }
 
     @Override
     public ProcessOrderResponse processOrder(Long orderId) {
-        return null;
+        Order order = findById(orderId);
+
+        order.getItems().forEach(product -> {
+            switch (product.getType()) {
+                case NORMAL:
+                    productService.handleNormalProduct(product);
+                    break;
+                case SEASONAL:
+                    productService.handleSeasonalProduct(product);
+                    break;
+                case EXPIRABLE:
+                    productService.handleExpirableProduct(product);
+                    break;
+                default:
+                    throw new RuntimeException("Unknown product type");
+            }
+        });
+        return new ProcessOrderResponse(orderId);
     }
 }
