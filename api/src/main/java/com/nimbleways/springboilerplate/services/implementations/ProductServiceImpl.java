@@ -70,16 +70,4 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(product);
     }
 
-    public void handleExpiredProduct(Product p) {
-        /*
-        if (p.getAvailable() > 0 && p.getExpiryDate().isAfter(LocalDate.now())) {
-            p.setAvailable(p.getAvailable() - 1);
-            pr.save(p);
-        } else {
-            ns.sendExpirationNotification(p.getName(), p.getExpiryDate());
-            p.setAvailable(0);
-            pr.save(p);
-        }
-         */
-    }
 }
