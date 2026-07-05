@@ -16,14 +16,6 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final NotificationService notificationService;
 
-    public void notifyDelay(int leadTime, Product p) {
-        /*
-        p.setLeadTime(leadTime);
-        pr.save(p);
-        ns.sendDelayNotification(leadTime, p.getName());
-        */
-    }
-
     @Override
     public void handleNormalProduct(Product product) {
         if (product.getAvailable() > 0) {
