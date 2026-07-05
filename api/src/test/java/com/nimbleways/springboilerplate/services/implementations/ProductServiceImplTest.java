@@ -15,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.not;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import static org.mockito.Mockito.never;
