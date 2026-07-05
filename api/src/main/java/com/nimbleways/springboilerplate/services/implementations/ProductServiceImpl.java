@@ -43,19 +43,27 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void handleSeasonalProduct(Product p) {
-        /*
-        if (LocalDate.now().plusDays(p.getLeadTime()).isAfter(p.getSeasonEndDate())) {
-            ns.sendOutOfStockNotification(p.getName());
-            p.setAvailable(0);
-            pr.save(p);
-        } else if (p.getSeasonStartDate().isAfter(LocalDate.now())) {
-            ns.sendOutOfStockNotification(p.getName());
-            pr.save(p);
-        } else {
-            notifyDelay(p.getLeadTime(), p);
+    public void handleSeasonalProduct(Product product) {
+        if(product.getSeasonStartDate().isBefore(LocalDate.now()) && product.getSeasonEndDate().isAfter(LocalDate.now()) && product.getAvailable()>0) {
+            product.setAvailable(product.getAvailable() - 1);
+            productRepository.save(product);
+            return;
         }
-         */
+
+        if (LocalDate.now().plusDays(product.getLeadTime()).isAfter(product.getSeasonEndDate())) {
+            notificationService.sendOutOfStockNotification(product.getName());
+            product.setAvailable(0);
+            productRepository.save(product);
+            return;
+        }
+
+        if (product.getSeasonStartDate().isAfter(LocalDate.now())) {
+            notificationService.sendOutOfStockNotification(product.getName());
+            productRepository.save(product);
+            return;
+        }
+
+        notificationService.sendDelayNotification(product.getLeadTime(), product.getName());
     }
 
     @Override
