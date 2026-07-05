@@ -187,6 +187,81 @@ class ProductServiceImplTest {
             product.setType(ProductType.NORMAL);
             product.setName("Expirable Product");
         }
+
+        @Test
+        void availableAndNotExpired_decrementsAvailableAndSave(){
+            //Arrange
+            product.setAvailable(10);
+            product.setExpiryDate(LocalDate.now().plusDays(5));
+
+            //Act
+            productService.handleExpirableProduct(product);
+
+            //Assert
+            assertThat(product.getAvailable()).isEqualTo(9);
+            verify(productRepository).save(product);
+            verify(notificationService, never()).sendExpirationNotification(product.getName(), product.getExpiryDate());
+        }
+
+        @Test
+        void availableAndExpired_sendsExpirationNotificationAndSetAvailableToZero(){
+            //Arrange
+            product.setAvailable(10);
+            product.setExpiryDate(LocalDate.now().minusDays(1));
+
+            //Act
+            productService.handleExpirableProduct(product);
+
+            //Assert
+            assertThat(product.getAvailable()).isEqualTo(0);
+            verify(notificationService).sendExpirationNotification(product.getName(), product.getExpiryDate());
+            verify(productRepository).save(product);
+        }
+
+        @Test
+        void notAvailableAndNotExpired_sendsExpirationNotificationAndSetAvailableToZero(){
+            //Arrange
+            product.setAvailable(0);
+            product.setExpiryDate(LocalDate.now().plusDays(5));
+
+            //Act
+            productService.handleExpirableProduct(product);
+
+            //Assert
+            assertThat(product.getAvailable()).isEqualTo(0);
+            verify(notificationService).sendExpirationNotification(product.getName(), product.getExpiryDate());
+            verify(productRepository).save(product);
+        }
+
+        @Test
+        void notAvailableAndExpired_sendsExpirationNotificationAndSetAvailableToZero(){
+            //Arrange
+            product.setAvailable(0);
+            product.setExpiryDate(LocalDate.now().minusDays(5));
+
+            //Act
+            productService.handleExpirableProduct(product);
+
+            //Assert
+            assertThat(product.getAvailable()).isEqualTo(0);
+            verify(notificationService).sendExpirationNotification(product.getName(), product.getExpiryDate());
+            verify(productRepository).save(product);
+        }
+
+        @Test
+        void availableAndExpiresToDay_sendsExpirationNotificationAndSetAvailableToZero(){
+            //Arrange
+            product.setAvailable(10);
+            product.setExpiryDate(LocalDate.now());
+
+            //Act
+            productService.handleExpirableProduct(product);
+
+            //Assert
+            assertThat(product.getAvailable()).isEqualTo(0);
+            verify(notificationService).sendExpirationNotification(product.getName(), product.getExpiryDate());
+            verify(productRepository).save(product);
+        }
     }
 
 }
