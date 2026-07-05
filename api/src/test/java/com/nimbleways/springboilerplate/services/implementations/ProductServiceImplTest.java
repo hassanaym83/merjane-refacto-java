@@ -94,10 +94,7 @@ class ProductServiceImplTest {
             product.setAvailable(-1);
             product.setLeadTime(0);
 
-            //Act
-            productService.handleNormalProduct(product);
-
-            //Assert
+            //Act && Assert
             assertThatThrownBy(() -> productService.handleNormalProduct(product))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("Available quantity cannot be negative");

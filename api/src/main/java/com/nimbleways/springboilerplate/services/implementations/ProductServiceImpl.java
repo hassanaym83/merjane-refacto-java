@@ -26,7 +26,20 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void handleNormalProduct(Product product) {
+        if (product.getAvailable() > 0) {
+            product.setAvailable(product.getAvailable() - 1);
+            productRepository.save(product);
+            return;
+        }
 
+        if(product.getAvailable() == 0 && product.getLeadTime()>0) {
+            notificationService.sendDelayNotification(product.getLeadTime(), product.getName());
+            return;
+        }
+
+        if(product.getAvailable() < 0) {
+            throw new IllegalArgumentException("Available quantity cannot be negative");
+        }
     }
 
     @Override
