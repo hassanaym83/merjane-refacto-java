@@ -5,7 +5,7 @@ import com.nimbleways.springboilerplate.entities.Order;
 import com.nimbleways.springboilerplate.entities.Product;
 import com.nimbleways.springboilerplate.repositories.OrderRepository;
 import com.nimbleways.springboilerplate.repositories.ProductRepository;
-import com.nimbleways.springboilerplate.services.implementations.ProductService;
+import com.nimbleways.springboilerplate.services.implementations.ProductServiceImpl;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/orders")
 public class MyController {
     @Autowired
-    private ProductService ps;
+    private ProductServiceImpl ps;
 
     @Autowired
     private ProductRepository pr;

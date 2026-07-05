@@ -2,6 +2,8 @@ package com.nimbleways.springboilerplate.services.implementations;
 
 import java.time.LocalDate;
 
+import com.nimbleways.springboilerplate.services.api.ProductService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,21 +11,27 @@ import com.nimbleways.springboilerplate.entities.Product;
 import com.nimbleways.springboilerplate.repositories.ProductRepository;
 
 @Service
-public class ProductService {
-
-    @Autowired
-    ProductRepository pr;
-
-    @Autowired
-    NotificationService ns;
+@RequiredArgsConstructor
+public class ProductServiceImpl implements ProductService {
+    private final ProductRepository productRepository;
+    private final NotificationService notificationService;
 
     public void notifyDelay(int leadTime, Product p) {
+        /*
         p.setLeadTime(leadTime);
         pr.save(p);
         ns.sendDelayNotification(leadTime, p.getName());
+        */
     }
 
+    @Override
+    public void handleNormalProduct(Product product) {
+
+    }
+
+    @Override
     public void handleSeasonalProduct(Product p) {
+        /*
         if (LocalDate.now().plusDays(p.getLeadTime()).isAfter(p.getSeasonEndDate())) {
             ns.sendOutOfStockNotification(p.getName());
             p.setAvailable(0);
@@ -34,9 +42,16 @@ public class ProductService {
         } else {
             notifyDelay(p.getLeadTime(), p);
         }
+         */
+    }
+
+    @Override
+    public void handleExpirableProduct(Product product) {
+
     }
 
     public void handleExpiredProduct(Product p) {
+        /*
         if (p.getAvailable() > 0 && p.getExpiryDate().isAfter(LocalDate.now())) {
             p.setAvailable(p.getAvailable() - 1);
             pr.save(p);
@@ -45,5 +60,6 @@ public class ProductService {
             p.setAvailable(0);
             pr.save(p);
         }
+         */
     }
 }
