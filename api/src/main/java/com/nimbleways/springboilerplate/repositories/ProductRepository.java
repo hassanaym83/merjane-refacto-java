@@ -6,7 +6,7 @@ import com.nimbleways.springboilerplate.entities.Product;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ProductRepository extends JpaRepository<Product, UUID> {
+public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findById(Long productId);
 
     Optional<Product> findFirstByName(String name);
